@@ -1,0 +1,924 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "d092dd94390b7d7f",
+   "metadata": {},
+   "source": [
+    "# Bucket Sort (Ordenación de cubo)\n",
+    "## Pseudocódigo para ordenación de cubo:\n",
+    "\n",
+    "    void bucketSort(float[] a,int n){\n",
+    "\n",
+    "        for(each floating integer 'x' in n)\n",
+    "    \n",
+    "        {\n",
+    "            insert x into bucket[n*x]; \n",
+    "        }\n",
+    "    \n",
+    "        for(each bucket)\n",
+    "    \n",
+    "        {\n",
+    "            sort(bucket);\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "3d3610a2c0b17f3b",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.654016Z",
+     "start_time": "2024-05-04T18:17:26.640445Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[74, 68, 91, 11, 83, 48, 43, 29, 48, 88, 31, 92, 71, 69, 77, 50, 89, 76, 36, 67]\n",
+      "\n",
+      "Arreglo después de ordenar:\n",
+      "[11, 29, 31, 36, 43, 48, 48, 50, 67, 68, 69, 71, 74, 76, 77, 83, 88, 89, 91, 92]\n"
+     ]
+    }
+   ],
+   "source": [
+    "import random\n",
+    "\n",
+    "def bucket_sort(arr):\n",
+    "    # Encuentra el máximo y el mínimo en el arreglo\n",
+    "    max_val = max(arr)\n",
+    "    min_val = min(arr)\n",
+    "\n",
+    "    # Calcula el rango de los valores en el arreglo\n",
+    "    range_val = max_val - min_val + 1\n",
+    "\n",
+    "    # Crea una lista de buckets\n",
+    "    buckets = [[] for _ in range(range_val)]\n",
+    "\n",
+    "    # Coloca elementos en los buckets\n",
+    "    for num in arr:\n",
+    "        index = num - min_val\n",
+    "        buckets[index].append(num)\n",
+    "\n",
+    "    # Ordena individualmente cada bucket\n",
+    "    for bucket in buckets:\n",
+    "        bucket.sort()\n",
+    "\n",
+    "    # Concatena los buckets ordenados en el arreglo original\n",
+    "    index = 0\n",
+    "    for bucket in buckets:\n",
+    "        for num in bucket:\n",
+    "            arr[index] = num\n",
+    "            index += 1\n",
+    "\n",
+    "# Genera un arreglo aleatorio de enteros desordenados\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "\n",
+    "# Aplica el algoritmo de Bucket Sort\n",
+    "bucket_sort(arr)\n",
+    "\n",
+    "print(\"\\nArreglo después de ordenar:\")\n",
+    "print(arr)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4ad4c2b7173c9d56",
+   "metadata": {},
+   "source": [
+    "# Counting Sort (Ordenación de conteo)\n",
+    "## Pseudocódigo para ordenación de conteo:\n",
+    "\n",
+    "    void countingSort(int[] arr) {\n",
+    "        int max = getMax(arr);\n",
+    "        int[] count = new int[max + 1];\n",
+    "        for (int num : arr) {\n",
+    "            count[num]++;\n",
+    "        }\n",
+    "        int index = 0;\n",
+    "        for (int i = 0; i < count.length; i++) {\n",
+    "            while (count[i] > 0) {\n",
+    "                arr[index++] = i;\n",
+    "                count[i]--;\n",
+    "            }\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "6a0a063ddbb2db1d",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.660160Z",
+     "start_time": "2024-05-04T18:17:26.656439Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[90, 96, 59, 54, 69, 8, 77, 33, 56, 47, 36, 34, 75, 28, 50, 92, 11, 5, 0, 12]\n",
+      "\n",
+      "Arreglo después de ordenar:\n",
+      "[0, 5, 8, 11, 12, 28, 33, 34, 36, 47, 50, 54, 56, 59, 69, 75, 77, 90, 92, 96]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def counting_sort(arr):\n",
+    "    # Encuentra el valor máximo en el arreglo\n",
+    "    max_val = max(arr)\n",
+    "\n",
+    "    # Crea un arreglo count de tamaño igual al valor máximo más uno\n",
+    "    count = [0] * (max_val + 1)\n",
+    "\n",
+    "    # Cuenta cuántas veces aparece cada elemento\n",
+    "    for num in arr:\n",
+    "        count[num] += 1\n",
+    "\n",
+    "    # Reconstruye el arreglo de entrada en orden ascendente\n",
+    "    index = 0\n",
+    "    for i in range(len(count)):\n",
+    "        while count[i] > 0:\n",
+    "            arr[index] = i\n",
+    "            index += 1\n",
+    "            count[i] -= 1\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "\n",
+    "counting_sort(arr)\n",
+    "\n",
+    "print(\"\\nArreglo después de ordenar:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6e6490f2a932be54",
+   "metadata": {},
+   "source": [
+    "# Insertion Sort (Ordenación de inserción)\n",
+    "## Pseudocódigo para ordenación de inserción:\n",
+    "\n",
+    "    void insertionSort(int[] arr) {\n",
+    "        for (int i = 1; i < arr.length; i++) {\n",
+    "            int key = arr[i];\n",
+    "            int j = i - 1;\n",
+    "            while (j >= 0 && arr[j] > key) {\n",
+    "                arr[j + 1] = arr[j];\n",
+    "                j--;\n",
+    "            }\n",
+    "            arr[j + 1] = key;\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "dc2e74cda9d73ee6",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.668739Z",
+     "start_time": "2024-05-04T18:17:26.660160Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[76, 55, 27, 96, 73, 34, 0, 7, 68, 47, 84, 27, 14, 58, 38, 68, 49, 62, 31, 13]\n",
+      "\n",
+      "Arreglo después de ordenar:\n",
+      "[0, 7, 13, 14, 27, 27, 31, 34, 38, 47, 49, 55, 58, 62, 68, 68, 73, 76, 84, 96]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def insertion_sort(arr):\n",
+    "    for i in range(1, len(arr)):\n",
+    "        key = arr[i]\n",
+    "        j = i - 1\n",
+    "        while j >= 0 and arr[j] > key:\n",
+    "            arr[j + 1] = arr[j]\n",
+    "            j -= 1\n",
+    "        arr[j + 1] = key\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "\n",
+    "insertion_sort(arr)\n",
+    "\n",
+    "print(\"\\nArreglo después de ordenar:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "980d2d335ac5b4a8",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "737764acfd9bfcf1",
+   "metadata": {},
+   "source": [
+    "# Heapsort (Ordenación por montones)\n",
+    "## Pseudocódigo para ordenación por montones:\n",
+    "\n",
+    "    void heapify(int[] arr, int n, int i) {\n",
+    "        int largest = i;\n",
+    "        int left = 2 * i + 1;\n",
+    "        int right = 2 * i + 2;\n",
+    "        if (left < n && arr[left] > arr[largest]) {\n",
+    "            largest = left;\n",
+    "        }\n",
+    "        if (right < n && arr[right] > arr[largest]) {\n",
+    "            largest = right;\n",
+    "        }\n",
+    "        if (largest != i) {\n",
+    "            int temp = arr[i];\n",
+    "            arr[i] = arr[largest];\n",
+    "            arr[largest] = temp;\n",
+    "            heapify(arr, n, largest);\n",
+    "        }\n",
+    "    }\n",
+    "\n",
+    "    void heapSort(int[] arr) {\n",
+    "        int n = arr.length;\n",
+    "        for (int i = n / 2 - 1; i >= 0; i--) {\n",
+    "            heapify(arr, n, i);\n",
+    "        }\n",
+    "        for (int i = n - 1; i > 0; i--) {\n",
+    "            int temp = arr[0];\n",
+    "            arr[0] = arr[i];\n",
+    "            arr[i] = temp;\n",
+    "            heapify(arr, i, 0);\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "id": "c1abe19ca3e552bf",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.674670Z",
+     "start_time": "2024-05-04T18:17:26.668739Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n",
+      "Arreglo ordenado:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def heapify(arr, n, i):\n",
+    "    largest = i\n",
+    "    left = 2 * i + 1\n",
+    "    right = 2 * i + 2\n",
+    "\n",
+    "    if left < n and arr[left] > arr[largest]:\n",
+    "        largest = left\n",
+    "\n",
+    "    if right < n and arr[right] > arr[largest]:\n",
+    "        largest = right\n",
+    "\n",
+    "    if largest != i:\n",
+    "        arr[i], arr[largest] = arr[largest], arr[i]\n",
+    "        heapify(arr, n, largest)\n",
+    "\n",
+    "def heapSort(arr):\n",
+    "    n = len(arr)\n",
+    "\n",
+    "    # Construir un max heap.\n",
+    "    for i in range(n // 2 - 1, -1, -1):\n",
+    "        heapify(arr, n, i)\n",
+    "\n",
+    "    # Extraer elementos uno por uno del montículo.\n",
+    "    for i in range(n - 1, 0, -1):\n",
+    "        arr[i], arr[0] = arr[0], arr[i]  # Intercambiar\n",
+    "        heapify(arr, i, 0)\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "\n",
+    "heapSort(arr)\n",
+    "print(\"Arreglo ordenado:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7b132cb06efadb8a",
+   "metadata": {
+    "jp-MarkdownHeadingCollapsed": true
+   },
+   "source": [
+    "# Ordenación Radix\n",
+    "## Pseudocódigo para ordenación Radix:\n",
+    "\n",
+    "    void countingSort(int[] arr, int n, int exp) {\n",
+    "        int[] output = new int[n];\n",
+    "        int[] count = new int[10];\n",
+    "        Arrays.fill(count, 0);\n",
+    "        for (int i = 0; i < n; i++) {\n",
+    "            count[(arr[i] / exp) % 10]++;\n",
+    "        }\n",
+    "        for (int i = 1; i < 10; i++) {\n",
+    "            count[i] += count[i - 1];\n",
+    "        }\n",
+    "        for (int i = n - 1; i >= 0; i--) {\n",
+    "            output[count[(arr[i] / exp) % 10] - 1] = arr[i];\n",
+    "            count[(arr[i] / exp) % 10]--;\n",
+    "        }\n",
+    "        for (int i = 0; i < n; i++) {\n",
+    "            arr[i] = output[i];\n",
+    "        }\n",
+    "    }\n",
+    "\n",
+    "    void radixSort(int[] arr) {\n",
+    "        int max = getMax(arr);\n",
+    "        for (int exp = 1; max / exp > 0; exp *= 10) {\n",
+    "            countingSort(arr, arr.length, exp);\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "id": "ea7df9ab635986f4",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.680029Z",
+     "start_time": "2024-05-04T18:17:26.674670Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n",
+      "Arreglo ordenado:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def countingSort(arr, exp):\n",
+    "    n = len(arr)\n",
+    "    output = [0] * n\n",
+    "    count = [0] * 10\n",
+    "\n",
+    "    for i in range(n):\n",
+    "        count[(arr[i] // exp) % 10] += 1\n",
+    "\n",
+    "    for i in range(1, 10):\n",
+    "        count[i] += count[i - 1]\n",
+    "\n",
+    "    i = n - 1\n",
+    "    while i >= 0:\n",
+    "        output[count[(arr[i] // exp) % 10] - 1] = arr[i]\n",
+    "        count[(arr[i] // exp) % 10] -= 1\n",
+    "        i -= 1\n",
+    "\n",
+    "    for i in range(n):\n",
+    "        arr[i] = output[i]\n",
+    "\n",
+    "def radixSort(arr):\n",
+    "    max_num = max(arr)\n",
+    "    exp = 1\n",
+    "    while max_num // exp > 0:\n",
+    "        countingSort(arr, exp)\n",
+    "        exp *= 10\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "radixSort(arr)\n",
+    "print(\"Arreglo ordenado:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "55f4f7b8b10ac65f",
+   "metadata": {
+    "jp-MarkdownHeadingCollapsed": true
+   },
+   "source": [
+    "# Selection Sort (Ordenación de selección)\n",
+    "## Pseudocódigo para ordenación de selección:\n",
+    "\n",
+    "    void selectionSort(int[] arr) {\n",
+    "        int n = arr.length;\n",
+    "        for (int i = 0; i < n - 1; i++) {\n",
+    "            int minIndex = i;\n",
+    "            for (int j = i + 1; j < n; j++) {\n",
+    "                if (arr[j] < arr[minIndex]) {\n",
+    "                    minIndex = j;\n",
+    "                }\n",
+    "            }\n",
+    "            int temp = arr[minIndex];\n",
+    "            arr[minIndex] = arr[i];\n",
+    "            arr[i] = temp;\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "id": "d7ee01833c760ec6",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.686547Z",
+     "start_time": "2024-05-04T18:17:26.680029Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n",
+      "Arreglo ordenado:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def selectionSort(arr):\n",
+    "    n = len(arr)\n",
+    "    for i in range(n - 1):\n",
+    "        minIndex = i\n",
+    "        for j in range(i + 1, n):\n",
+    "            if arr[j] < arr[minIndex]:\n",
+    "                minIndex = j\n",
+    "        arr[i], arr[minIndex] = arr[minIndex], arr[i]\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "selectionSort(arr)\n",
+    "print(\"Arreglo ordenado:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "78924ffc4f68e449",
+   "metadata": {
+    "jp-MarkdownHeadingCollapsed": true
+   },
+   "source": [
+    "# Bubble Sort (Ordenación de burbuja)\n",
+    "## Pseudocódigo para ordenación de burbuja:\n",
+    "\n",
+    "    void bubbleSort(int[] arr) {\n",
+    "        int n = arr.length;\n",
+    "        for (int i = 0; i < n - 1; i++) {\n",
+    "            for (int j = 0; j < n - i - 1; j++) {\n",
+    "                if (arr[j] > arr[j + 1]) {\n",
+    "                    int temp = arr[j];\n",
+    "                    arr[j] = arr[j + 1];\n",
+    "                    arr[j + 1] = temp;\n",
+    "                }\n",
+    "            }\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "id": "57b831a8dc606ac",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.691104Z",
+     "start_time": "2024-05-04T18:17:26.687882Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n",
+      "Arreglo ordenado:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def bubbleSort(arr):\n",
+    "    n = len(arr)\n",
+    "    for i in range(n - 1):\n",
+    "        for j in range(n - i - 1):\n",
+    "            if arr[j] > arr[j + 1]:\n",
+    "                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "bubbleSort(arr)\n",
+    "print(\"Arreglo ordenado:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3ae1932646c4cc1",
+   "metadata": {},
+   "source": [
+    "# Quick Sort (Ordenación rápida)\n",
+    "## Pseudocódigo para ordenación rápida:\n",
+    "\n",
+    "    void quickSort(int[] arr, int low, int high) {\n",
+    "        if (low < high) {\n",
+    "            int pi = partition(arr, low, high);\n",
+    "            quickSort(arr, low, pi - 1);\n",
+    "            quickSort(arr, pi + 1, high);\n",
+    "        }\n",
+    "    }\n",
+    "\n",
+    "    int partition(int[] arr, int low, int high) {\n",
+    "        int pivot = arr[high];\n",
+    "        int i = low - 1;\n",
+    "        for (int j = low; j < high; j++) {\n",
+    "            if (arr[j] < pivot) {\n",
+    "                i++;\n",
+    "                int temp = arr[i];\n",
+    "                arr[i] = arr[j];\n",
+    "                arr[j] = temp;\n",
+    "            }\n",
+    "        }\n",
+    "        int temp = arr[i + 1];\n",
+    "        arr[i + 1] = arr[high];\n",
+    "        arr[high] = temp;\n",
+    "        return i + 1;\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "id": "9a431365ee3a810a",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.725382Z",
+     "start_time": "2024-05-04T18:17:26.719695Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n",
+      "Arreglo ordenado:\n",
+      "[2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def quickSort(arr, low, high):\n",
+    "    if low < high:\n",
+    "        pi = partition(arr, low, high)\n",
+    "        quickSort(arr, low, pi - 1)\n",
+    "        quickSort(arr, pi + 1, high)\n",
+    "\n",
+    "def partition(arr, low, high):\n",
+    "    pivot = arr[high]\n",
+    "    i = low - 1\n",
+    "    for j in range(low, high):\n",
+    "        if arr[j] < pivot:\n",
+    "            i += 1\n",
+    "            arr[i], arr[j] = arr[j], arr[i]\n",
+    "    arr[i + 1], arr[high] = arr[high], arr[i + 1]\n",
+    "    return i + 1\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "n = len(arr)\n",
+    "print(\"Arreglo antes de ordenar:\")\n",
+    "print(arr)\n",
+    "quickSort(arr, 0, n - 1)\n",
+    "print(\"Arreglo ordenado:\")\n",
+    "print(arr)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "38d9d724c4746914",
+   "metadata": {},
+   "source": [
+    "# Timsort (Ordenación de Tim)\n",
+    "## Pseudocódigo para ordenación de Tim:\n",
+    "\n",
+    "    void timSort(int[] arr) {\n",
+    "        int n = arr.length;\n",
+    "        int run = 32;\n",
+    "        for (int i = 0; i < n; i += run) {\n",
+    "            insertionSort(arr, i, Math.min((i + 31), (n - 1)));\n",
+    "        }\n",
+    "        for (int size = run; size < n; size = 2 * size) {\n",
+    "            for (int left = 0; left < n; left += 2 * size) {\n",
+    "                int mid = left + size - 1;\n",
+    "                int right = Math.min((left + 2 * size - 1), (n - 1));\n",
+    "                merge(arr, left, mid, right);\n",
+    "            }\n",
+    "        }\n",
+    "    }\n",
+    "\n",
+    "    void insertionSort(int[] arr, int left, int right) {\n",
+    "        for (int i = left + 1; i <= right; i++) {\n",
+    "            int temp = arr[i];\n",
+    "            int j = i - 1;\n",
+    "            while (j >= left && arr[j] > temp) {\n",
+    "                arr[j + 1] = arr[j];\n",
+    "                j--;\n",
+    "            }\n",
+    "            arr[j + 1] = temp;\n",
+    "        }\n",
+    "    }\n",
+    "\n",
+    "    void merge(int[] arr, int l, int m, int r) {\n",
+    "        int len1 = m - l + 1;\n",
+    "        int len2 = r - m;\n",
+    "        int[] left = new int[len1];\n",
+    "        int[] right = new int[len2];\n",
+    "        for (int x = 0; x < len1; x++) {\n",
+    "            left[x] = arr[l + x];\n",
+    "        }\n",
+    "        for (int x = 0; x < len2; x++) {\n",
+    "            right[x] = arr[m + 1 + x];\n",
+    "        }\n",
+    "        int i = 0;\n",
+    "        int j = 0;\n",
+    "        int k = l;\n",
+    "        while (i < len1 && j < len2) {\n",
+    "            if (left[i] <= right[j]) {\n",
+    "                arr[k] = left[i];\n",
+    "                i++;\n",
+    "            } else {\n",
+    "                arr[k] = right[j];\n",
+    "                j++;\n",
+    "            }\n",
+    "            k++;\n",
+    "        }\n",
+    "        while (i < len1) {\n",
+    "            arr[k] = left[i];\n",
+    "            k++;\n",
+    "            i++;\n",
+    "        }\n",
+    "        while (j < len2) {\n",
+    "            arr[k] = right[j];"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "id": "fd13380c491f73b8",
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2024-05-04T18:17:26.751397Z",
+     "start_time": "2024-05-04T18:17:26.734888Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arreglo antes de ordenar: [2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n",
+      "Array ordenado: [2, 12, 26, 51, 54, 58, 65, 83, 90, 91]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def tim_sort(arr):\n",
+    "    n = len(arr)\n",
+    "    run = 32\n",
+    "    for i in range(0, n, run):\n",
+    "        insertion_sort(arr, i, min((i + 31), (n - 1)))\n",
+    "    for size in range(run, n, 2 * run):\n",
+    "        for left in range(0, n, 2 * size):\n",
+    "            mid = left + size - 1\n",
+    "            right = min((left + 2 * size - 1), (n - 1))\n",
+    "            merge(arr, left, mid, right)\n",
+    "\n",
+    "def insertion_sort(arr, left, right):\n",
+    "    for i in range(left + 1, right + 1):\n",
+    "        temp = arr[i]\n",
+    "        j = i - 1\n",
+    "        while j >= left and arr[j] > temp:\n",
+    "            arr[j + 1] = arr[j]\n",
+    "            j -= 1\n",
+    "        arr[j + 1] = temp\n",
+    "\n",
+    "def merge(arr, l, m, r):\n",
+    "    len1 = m - l + 1\n",
+    "    len2 = r - m\n",
+    "    left = [0] * len1\n",
+    "    right = [0] * len2\n",
+    "    for x in range(len1):\n",
+    "        left[x] = arr[l + x]\n",
+    "    for x in range(len2):\n",
+    "        right[x] = arr[m + 1 + x]\n",
+    "    i = 0\n",
+    "    j = 0\n",
+    "    k = l\n",
+    "    while i < len1 and j < len2:\n",
+    "        if left[i] <= right[j]:\n",
+    "            arr[k] = left[i]\n",
+    "            i += 1\n",
+    "        else:\n",
+    "            arr[k] = right[j]\n",
+    "            j += 1\n",
+    "        k += 1\n",
+    "    while i < len1:\n",
+    "        arr[k] = left[i]\n",
+    "        k += 1\n",
+    "        i += 1\n",
+    "    while j < len2:\n",
+    "        arr[k] = right[j]\n",
+    "        k += 1\n",
+    "        j += 1\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenar:\", arr)\n",
+    "tim_sort(arr)\n",
+    "print(\"Array ordenado:\", arr)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2b826e43351c13f5",
+   "metadata": {},
+   "source": [
+    "# Merge Sort (Ordenación por mezcla)\n",
+    "## Pseudocódigo para ordenación por mezcla:\n",
+    "\n",
+    "    void mergeSort(int[] arr, int l, int r) {\n",
+    "        if (l < r) {\n",
+    "            int m = (l + r) / 2;\n",
+    "            mergeSort(arr, l, m);\n",
+    "            mergeSort(arr, m + 1, r);\n",
+    "            merge(arr, l, m, r);\n",
+    "        }\n",
+    "    }\n",
+    "\n",
+    "    void merge(int[] arr, int l, int m, int r) {\n",
+    "        int len1 = m - l + 1;\n",
+    "        int len2 = r - m;\n",
+    "        int[] left = new int[len1];\n",
+    "        int[] right = new int[len2];\n",
+    "        for (int x = 0; x < len1; x++) {\n",
+    "            left[x] = arr[l + x];\n",
+    "        }\n",
+    "        for (int x = 0; x < len2; x++) {\n",
+    "            right[x] = arr[m + 1 + x];\n",
+    "        }\n",
+    "        int i = 0;\n",
+    "        int j = 0;\n",
+    "        int k = l;\n",
+    "        while (i < len1 && j < len2) {\n",
+    "            if (left[i] <= right[j]) {\n",
+    "                arr[k] = left[i];\n",
+    "                i++;\n",
+    "            } else {\n",
+    "                arr[k] = right[j];\n",
+    "                j++;\n",
+    "            }\n",
+    "            k++;\n",
+    "        }\n",
+    "        while (i < len1) {\n",
+    "            arr[k] = left[i];\n",
+    "            k++;\n",
+    "            i++;\n",
+    "        }\n",
+    "        while (j < len2) {\n",
+    "            arr[k] = right[j];\n",
+    "            k++;\n",
+    "            j++;\n",
+    "        }\n",
+    "    }"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "533bd486c9ee852d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def merge_sort(arr):\n",
+    "    if len(arr) > 1:\n",
+    "        mid = len(arr) // 2  # Encontrar el punto medio del arreglo\n",
+    "        left_half = arr[:mid]  # Dividir el arreglo en mitades\n",
+    "        right_half = arr[mid:]\n",
+    "\n",
+    "        # Llamadas recursivas para ordenar las mitades\n",
+    "        merge_sort(left_half)\n",
+    "        merge_sort(right_half)\n",
+    "\n",
+    "        # Índices para recorrer las mitades y el arreglo original\n",
+    "        i = j = k = 0\n",
+    "\n",
+    "        # Mezclar las mitades ordenadas\n",
+    "        while i < len(left_half) and j < len(right_half):\n",
+    "            if left_half[i] < right_half[j]:\n",
+    "                arr[k] = left_half[i]\n",
+    "                i += 1\n",
+    "            else:\n",
+    "                arr[k] = right_half[j]\n",
+    "                j += 1\n",
+    "            k += 1\n",
+    "\n",
+    "        # Agregar elementos restantes de las mitades\n",
+    "        while i < len(left_half):\n",
+    "            arr[k] = left_half[i]\n",
+    "            i += 1\n",
+    "            k += 1\n",
+    "\n",
+    "        while j < len(right_half):\n",
+    "            arr[k] = right_half[j]\n",
+    "            j += 1\n",
+    "            k += 1\n",
+    "\n",
+    "\n",
+    "# Ejemplo de uso\n",
+    "arr = [random.randint(0, 100) for _ in range(20)]\n",
+    "print(\"Arreglo antes de ordenarlo:\")\n",
+    "print(arr)\n",
+    "merge_sort(arr)\n",
+    "print(\"Arreglo ordenado:\")\n",
+    "print(arr)\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
